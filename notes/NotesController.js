@@ -4,7 +4,7 @@ import Note from './NoteModel.js';
 
 export const createNote = async (req, res) => {
     try {
-        const { title, content } = req.body;
+        const {title, content} = req.body;
         const newNote = new Note({
             title,
             content,
@@ -13,7 +13,7 @@ export const createNote = async (req, res) => {
         await newNote.save();
         res.status(201).json(newNote);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({message: "Server error"});
     }
 };
 
