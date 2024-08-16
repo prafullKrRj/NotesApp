@@ -100,8 +100,8 @@ export const deleteManyNotes = async (req, res) => {
         if (result.deletedCount === 0) {
             return res.status(404).json({ message: 'No notes found' });
         }
-        
-        res.status(200).json({ message: 'Notes deleted successfully' });
+        const notes = await Note.find({user: req.user._id});
+        res.status(200).json(notes);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
