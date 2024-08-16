@@ -92,7 +92,7 @@ export const deleteManyNotes = async (req, res) => {
         if (!Array.isArray(ids) || ids.length === 0) {
             return res.status(400).json({ message: 'Invalid input' });
         }
-        
+        console.log(ids)
         // Delete the notes
         const result = await Note.deleteMany({ _id: { $in: ids } });
         
@@ -100,6 +100,7 @@ export const deleteManyNotes = async (req, res) => {
         if (result.deletedCount === 0) {
             return res.status(404).json({ message: 'No notes found' });
         }
+        console.log(result)
         const notes = await Note.find({user: req.user._id});
         res.status(200).json(notes);
     } catch (error) {
