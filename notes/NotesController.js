@@ -56,7 +56,7 @@ export const updateNote = async (req, res) => {
             return res.status(404).send("No note exists");
         }
         await note.updateOne(updatedNote, {new: true});
-        res.json(updatedNote);
+        res.json(updatedNote).status(200);
     } catch (error) {
         res.status(500).json({message: error.message});
     }
