@@ -50,11 +50,9 @@ export const updateNote = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(404).send("No note with that id");
         }
-        console.log(req.body)
-        const newTitle = title + " updated";
-        const updatedNote = {newTitle, content, _id: id};
+        const updatedNote = {title: title, content: content, _id: id};
         const note = Note.findById(id);
-        if (!note || note.user.toString() !== req.user._id.toString()) {
+        if (!note) {
             return res.status(404).send("No note exists");
         }
         await note.updateOne(updatedNote, {new: true});
