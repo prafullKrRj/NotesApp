@@ -83,3 +83,27 @@ export const getNote = async (req, res) => {
         res.status(500).json({message: error.message});
     }
 }
+// delete many
+export const deleteManyNotes = async (req, res) => {
+    try {
+        const { ids } = req.body;
+        
+        // Validate the input
+        if (!Array.isArray(ids) || ids.length === 0) {
+            return res.status(400).json({ message: 'Invalid input' });
+        }
+        
+        // Delete the notes
+        const result = await Note.deleteMany({ _id: { $in: ids } });
+        
+        // Check if any notes were deleted
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'No notes found' });
+        }
+        
+        res.status(200).json({ message: 'Notes deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
