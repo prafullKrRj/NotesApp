@@ -11,4 +11,5 @@ notesRouter.delete('/delete/:id', authMiddleware, deleteNote);
 notesRouter.put('/update', authMiddleware, updateNote);
 notesRouter.get('/get/:id', authMiddleware, getNote);
 notesRouter.post('/deleteMany', authMiddleware, deleteManyNotes);
+
 export default notesRouter;

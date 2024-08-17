@@ -43,6 +43,7 @@ app.get('/', (req, res) => {
 });
 
 const mongoUri = process.env.MONGO_URI;
+
 mongoose.connect(mongoUri, {
     dbName: 'notesApp'
 })

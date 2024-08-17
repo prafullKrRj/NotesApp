@@ -18,7 +18,10 @@ export const login = async (req, res) => {
             return res.status(500).send("Wrong password")
         }
         const token = jwt.sign({userId: user._id}, secret); // Generate JWT token
-        res.send({token});
+        res.send({
+            token: token,
+            user: user
+        });
     } catch (err) {
         res.send("Something went wrong login").status(500)
         console.log("err")
