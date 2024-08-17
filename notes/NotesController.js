@@ -44,23 +44,32 @@ export const getNotes = async (req, res) => {
     }
 }
 // updateNote function
+// updateNote function
 export const updateNote = async (req, res) => {
     try {
-        const {title, content, id} = await req.body;
+        const { title, content, id } = req.body;
+
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(404).send("No note with that id");
         }
-        const updatedNote = {title: title, content: content, _id: id};
-        const note = Note.findById(id);
+        const note = await Note.findById(id);
         if (!note) {
             return res.status(404).send("No note exists");
         }
-        await note.updateOne(updatedNote, {new: true});
-        res.json(updatedNote).status(200);
+
+        if (note.user.toString() !== req.user._id.toString()) {
+            return res.status(401).send("Not authorized to update this note");
+        }
+
+        note.title = title;
+        note.content = content;
+
+        const updatedNote = await note.save();
+        res.status(200).json(updatedNote);
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
-}
+};
 // getNote by id function
 export const getNote = async (req, res) => {
     try {
