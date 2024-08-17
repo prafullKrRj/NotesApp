@@ -2,6 +2,9 @@ import User from './UserModel.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
+import userModel from "./UserModel.js";
+import NoteModel from "../notes/NoteModel.js";
+import Note from "../notes/NoteModel.js";
 
 dotenv.config()
 const secret = process.env.JWT_SECRET
@@ -41,4 +44,21 @@ export const register = async (req, res) => {
     } catch (err) {
         res.status(400).send("Something went wrong")
     }
+}
+export const deleteProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id)
+        if (user) {
+            const notes = await Note.find({user: req.user._id});
+            await Note.deleteMany({user: req.user._id});
+            await user.deleteOne()
+            return res.send("User deleted successfully").status(200)
+        }
+        return res.send("No user with that id").status(404)
+    } catch (err) {
+        console.log(err)
+        res.send("Something went wrong").status(500)
+    }
+
+
 }
