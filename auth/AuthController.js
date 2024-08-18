@@ -59,6 +59,4 @@ export const deleteProfile = async (req, res) => {
         console.log(err)
         res.send("Something went wrong").status(500)
     }
-
-
 }
